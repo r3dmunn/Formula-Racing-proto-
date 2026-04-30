@@ -26,11 +26,15 @@ class player:
         if keys[pygame.K_a]:
             self.rect.x -= self.sp*dt
         self.rect = self.image_Rect
+        if self.rect.x >= 880:
+            self.rect.x = 870
+        elif self.rect.x <= 360:
+            self.rect.x = 370
         #TODO; Fijarse si la hitbox se mueve al mismo tiempo que el Rect
     def draw(self):
         screen.blit(self.img,self.image_Rect)
     def sound(self):
-
+        self.soundcar.set_volume(0.25)
         self.soundcar.play(loops=-1)
         
 player_inst = player()        
@@ -47,11 +51,16 @@ while running:
     i=0
     for _ in range(13):
         pygame.draw.rect(screen,(255,0,0),(360,i,20,20))
+        pygame.draw.rect(screen,(255,255,255),(640,i,20,20))
         pygame.draw.rect(screen,(255,0,0),(890,i,20,20))
-        i += 72    
+        i += 72
+    
+
+        
     player_inst.draw()
     player_inst.movement()
     player_inst.sound()
     
     pygame.display.flip()
     dt = clock.tick(60)/100
+    
