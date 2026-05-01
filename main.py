@@ -36,8 +36,27 @@ class player:
     def sound(self):
         self.soundcar.set_volume(0.25)
         self.soundcar.play(loops=-1)
+
+class debry():
+    def __init__(self):
+        self.img = pygame.image.load("wooden-log-yes.png").convert_alpha()
+        self.rect = pygame.Rect(540,0,20,50)
+        self.image_Rect = self.img.get_rect(center=(540,0))
+        self.hitbox = self.image_Rect.center
+        self.sp = 18
+    def draw(self):
+        screen.blit(self.img,self.image_Rect)
+    def movement(self):
+        self.rect.y += self.sp*dt
+        self.rect = self.image_Rect
+    def reposition(self):
+        while self.rect.y >= 720:
+            self.rect.y = 0
         
 player_inst = player()        
+debry_inst = debry()
+debry_inst2 = debry()
+debry_inst3 = debry()
 
 while running:
     
@@ -60,6 +79,22 @@ while running:
     player_inst.draw()
     player_inst.movement()
     player_inst.sound()
+    
+    debry_inst.draw()
+    debry_inst.movement()
+    debry_inst.reposition()
+    
+    debry_inst2.rect.x= 740
+    debry_inst2.sp = 22
+    debry_inst2.draw()
+    debry_inst2.movement()
+    debry_inst2.reposition()
+    
+    debry_inst3.rect.x = 620
+    debry_inst3.sp= 15
+    debry_inst3.draw()
+    debry_inst3.movement()
+    debry_inst3.reposition()
     
     pygame.display.flip()
     dt = clock.tick(60)/100
