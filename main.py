@@ -6,6 +6,7 @@ pygame.mixer.init()
 running, dt = True,0
 screen = pygame.display.set_mode((1280,720))
 clock = pygame.time.Clock()
+
 class player:
     def __init__(self):
         self.img = pygame.image.load("mercedes_8bit.png").convert_alpha()
@@ -14,7 +15,7 @@ class player:
         self.hitbox = self.image_Rect.center
         self.sp = 35
         self.startup = pygame.mixer.Sound("8bit_car_startup.wav")
-        self.soundcar = pygame.mixer.Sound("8bit_car_engine.wav")
+        self.soundcar = pygame.mixer.Sound("8bit_car_engine.wav")    
     def movement(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
@@ -30,12 +31,19 @@ class player:
             self.rect.x = 870
         elif self.rect.x <= 360:
             self.rect.x = 370
-        #TODO; Fijarse si la hitbox se mueve al mismo tiempo que el Rect
     def draw(self):
         screen.blit(self.img,self.image_Rect)
     def sound(self):
         self.soundcar.set_volume(0.25)
         self.soundcar.play(loops=-1)
+    def collision(self,debry1,debry2,debry3):
+        if self.rect.colliderect(debry1) or self.rect.colliderect(debry2) or self.rect.colliderect(debry3):
+            self.img = pygame.image.load("explosion.png").convert_alpha()
+            self.soundcar.stop()
+            self.explosion = pygame.mixer.Sound("SFX_Explosion_01.wav")
+            self.explosion.play()
+            #TODO; hacer que el Rect se quede en un solo lugar, y desaparezca la imagen
+            
 
 class debry():
     def __init__(self):
@@ -79,6 +87,7 @@ while running:
     player_inst.draw()
     player_inst.movement()
     player_inst.sound()
+    player_inst.collision(debry_inst,debry_inst2,debry_inst3)
     
     debry_inst.draw()
     debry_inst.movement()
